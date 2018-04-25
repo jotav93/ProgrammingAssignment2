@@ -2,14 +2,36 @@
 ## functions do
 
 ## Write a short comment describing this function
-
+## This function defines the different functions that will be used in the
+## cacheSolve function. 
+## These functiosn are set, get, getinv, setinv
 makeCacheMatrix <- function(x = matrix()) {
-
+        m <- NULL
+        set <- function(y) {
+                x <<- y
+                m <<- NULL
+        }
+        get <- function() x
+        setinv <- function(solve) m <<- solve
+        getinv <- function() m
+        list(set = set, get = get,
+             setinv = setinv,
+             getinv = getinv)
 }
 
 
 ## Write a short comment describing this function
-
+## This function first tries to get the inverse function if previously calculated
+## If not previously calculated then calculate it.
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+        m <- x$getinv()
+        if(!is.null(m)) {
+                message("getting cached data")
+                return(m)
+        }
+        data <- x$get()
+        m <- solve(data, ...)
+        x$setinv(m)
+        m
 }
